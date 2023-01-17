@@ -122,7 +122,6 @@ ipcMain.on("image:resize", (e, options) => {
       .then((res) => {
         const downloadDir = res.filePaths[0];
         options.dest = path.join(downloadDir, "imageresizer");
-        // console.log("here", options.dest);
         resizeImage(options);
       });
   } catch (err) {
