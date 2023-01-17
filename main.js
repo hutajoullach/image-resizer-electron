@@ -87,16 +87,6 @@ const menu = [
         },
       ]
     : []),
-  // {
-  //   label: 'File',
-  //   submenu: [
-  //     {
-  //       label: 'Quit',
-  //       click: () => app.quit(),
-  //       accelerator: 'CmdOrCtrl+W',
-  //     },
-  //   ],
-  // },
   ...(isDev
     ? [
         {
@@ -114,7 +104,6 @@ const menu = [
 
 // Respond to the resize image event
 ipcMain.on("image:resize", (e, options) => {
-  // console.log(options);
   options.dest = path.join(os.homedir(), "imageresizer");
   resizeImage(options);
 });
