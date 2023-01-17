@@ -2,7 +2,14 @@ const path = require("path");
 const os = require("os");
 const fs = require("fs");
 const resizeImg = require("resize-img");
-const { app, BrowserWindow, Menu, ipcMain, shell } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  Menu,
+  ipcMain,
+  shell,
+  dialog,
+} = require("electron");
 
 const isDev = process.env.NODE_ENV !== "production";
 const isMac = process.platform === "darwin";
@@ -104,8 +111,23 @@ const menu = [
 
 // Respond to the resize image event
 ipcMain.on("image:resize", (e, options) => {
-  options.dest = path.join(os.homedir(), "imageresizer");
-  resizeImage(options);
+  // options.dest = path.join(os.homedir(), "imageresizer");
+  try {
+    dialog
+      .showOpenDialog({
+        defaultPath: app.getPath("downloads"),
+        buttonLabel: "Select any Folder",
+        properties: ["openDirectory"],
+      })
+      .then((res) => {
+        const downloadDir = res.filePaths[0];
+        options.dest = path.join(downloadDir, "imageresizer");
+        // console.log("here", options.dest);
+        resizeImage(options);
+      });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 // Resize and save image
